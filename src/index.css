@@ -11,3 +11,9 @@ body {
   height: auto;
   font-family: "Mooli", sans-serif;
 }
+
+@layer {
+  .auth-section {
+    @apply w-full h-screen overflow-hidden flex flex-col items-start justify-start px-6 py-4 gap-6;
+  }
+}
