@@ -9,7 +9,12 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { storage } from "../config/firebase.config";
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "../config/firebase.config";
 import { progress } from "framer-motion";
+import { initialTags } from "../utils/helpers";
+import { serverTimestamp } from "firebase/firestore";
+import useTemplates from "../hooks/useTemplates";
 
 const CreateTemplate = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +27,15 @@ const CreateTemplate = () => {
     uri: null,
     progress: 0,
   });
+
+  const [selectedTags, setSelectedTags] = useState([]);
+
+  const {
+    data: templates,
+    isLoading: templateIsLoading,
+    isError: templateIsError,
+    refetch: templateRefetch,
+  } = useTemplates();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -93,6 +107,40 @@ const CreateTemplate = () => {
     return allowedTypes.includes(file.type);
   };
 
+  const handleSelectedTags = (tag) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((selected) => selected !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  const pushToServer = async () => {
+    const timestamp = serverTimestamp();
+    const id = `${Date.now()}`;
+    const _doc = {
+      _id: id,
+      title: formData.title,
+      imageURL: imageAsset.uri,
+      tags: selectedTags,
+      name:
+        templates && templates.length > 0
+          ? `Templates${templates.length + 1}`
+          : "Template1",
+      timestamp: timestamp,
+    };
+
+    await setDoc(doc(db, "templates", id), _doc)
+      .then(() => {
+        setFormData((prevData) => ({ ...prevData, title: "", imageUrl: "" }));
+        setImageAsset((prevAsset) => ({ ...prevAsset, uri: null }));
+        setSelectedTags([]);
+        templateRefetch();
+        toast.success("Data pushed to the server");
+      })
+      .catch((err) => {});
+  };
+
   return (
     <div className="w-full px-4 lg:px-10 2xl:px-32 py-4 grid grid-cols-1 lg:grid-cols-12">
       {/* left container */}
@@ -100,17 +148,17 @@ const CreateTemplate = () => {
         <div className="w-full">
           <p className="text-lg text-txtPrimary">Create a new Template</p>
         </div>
-
         {/* template ID section */}
         <div className="w-full flex items-center justify-end">
-          <p className="text-base text-txtLight uppercase font-semibold ">
+          <p className="text-sm text-txtLight uppercase font-semibold ">
             TempID : {""}
           </p>
-          <p className="text-sm text-txtDark capitalize font-bold ">
-            Template 1
+          <p className="text-sm text-txtDark capitalize font-bold">
+            {templates && templates.length > 0
+              ? `Templates${templates.length + 1}`
+              : "Template1"}
           </p>
         </div>
-
         {/* template title section */}
         <input
           className="w-full px-4 py-3 rounded-md bg-transparent border border-gray-300 text-lg text-txtPrimary focus:text-txtDark focus:shadow-md outline-none"
@@ -120,9 +168,8 @@ const CreateTemplate = () => {
           value={formData.title}
           onChange={handleInputChange}
         />
-
         {/* file uploader section */}
-        <div className="w-full bg-gray-100 backdrop-blur-md h-[420px] lg:h-[620px] 2xl:h-[740px] rounded-md border-2 border-dotted border-gray-300 cursor-pointer flex items-center justify-center">
+        <div className="w-full bg-gray-100 backdrop-blur-md h-[420px] lg:h-[580px] 2xl:h-[700px] rounded-md border-2 border-dotted border-gray-300 cursor-pointer flex items-center justify-center">
           {imageAsset.isImageLoading ? (
             <React.Fragment>
               <div className="flex flex-col items-center justify-center gap-4">
@@ -173,6 +220,30 @@ const CreateTemplate = () => {
             </React.Fragment>
           )}
         </div>
+
+        {/* Tags Section */}
+        <div className="w-full flex items-center justify-around flex-wrap gap-2">
+          {initialTags.map((tag, index) => (
+            <div
+              key={index}
+              className={`border border-gray-300 px-2 py-1 rounded-md cursor-pointer ${
+                selectedTags.includes(tag) ? "bg-blue-500 text-white" : ""
+              }`}
+              onClick={() => handleSelectedTags(tag)}
+            >
+              <p className="text-xs">{tag}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* save button */}
+        <button
+          type="button"
+          className="w-full bg-blue-700 rounded-md py-3"
+          onClick={pushToServer}
+        >
+          Save
+        </button>
       </div>
 
       {/* right container */}
