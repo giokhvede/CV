@@ -15,24 +15,18 @@ const AuthButtonWithProvider = ({ Icon, label, provider }) => {
     switch (provider) {
       case "GoogleAuthProvider":
         await signInWithRedirect(auth, googleAuthProvider)
-          .then((result) => {
-            console.log(result);
-          })
+          .then((result) => {})
           .catch((error) => console.log(`Error: ${error.Message}`));
         break;
       case "GithubAuthProvider":
         await signInWithRedirect(auth, githubAuthProvider)
-          .then((result) => {
-            console.log(result);
-          })
+          .then((result) => {})
           .catch((error) => console.log(`Error: ${error.Message}`));
         break;
 
       default:
         await signInWithRedirect(auth, googleAuthProvider)
-          .then((result) => {
-            console.log(result);
-          })
+          .then((result) => {})
           .catch((error) => console.log(`Error: ${error.Message}`));
         break;
     }

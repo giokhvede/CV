@@ -5,7 +5,7 @@ import { AuthButtonWithProvider, MainSpinner } from "../components/";
 
 import { FaGoogle, FaGithub } from "react-icons/fa6";
 import useUser from "../hooks/useUser";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Authentication = () => {
   const { data, isLoading, isError } = useUser();
@@ -25,7 +25,13 @@ const Authentication = () => {
   return (
     <div className="auth-section">
       {/* top section */}
-      <img src={Logo} alt="Logo" className="w-12 h-auto object-contain" />
+      <Link to={"/"}>
+        <img
+          src={Logo}
+          alt="Logo"
+          className="w-12 h-auto object-contain cursor-pointer"
+        />
+      </Link>
 
       {/* main section */}
       <div className="w-full flex flex-1 flex-col items-center justify-center gap-6 text-center">
