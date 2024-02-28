@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import { FaUpload } from "react-icons/fa6";
+import { FaTrash, FaUpload } from "react-icons/fa6";
 import { PuffLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { storage } from "../config/firebase.config";
 import { progress } from "framer-motion";
 
@@ -67,6 +72,20 @@ const CreateTemplate = () => {
     } else {
       toast.info("Invalid file Format");
     }
+  };
+
+  const deleteAnImageObject = async () => {
+    setInterval(() => {
+      setImageAsset((prevAsset) => ({
+        ...prevAsset,
+        progress: 0,
+        uri: null,
+      }));
+    }, 2000);
+    const deleteRef = ref(storage, imageAsset.uri);
+    deleteObject(deleteRef).then(() => {
+      toast.success("image Removed");
+    });
   };
 
   const isAllowed = (file) => {
@@ -140,6 +159,14 @@ const CreateTemplate = () => {
                       loading="lazy"
                       alt=""
                     />
+
+                    {/* delete uploaded picture */}
+                    <div
+                      className="absolute top-4 right-4 w-8 h-8 rouunded-md flex items-center justify-center cursor-pointer bg-red-500"
+                      onClick={deleteAnImageObject}
+                    >
+                      <FaTrash />
+                    </div>
                   </div>
                 </React.Fragment>
               )}
