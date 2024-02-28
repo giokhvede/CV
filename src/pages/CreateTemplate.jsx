@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaTrash, FaUpload } from "react-icons/fa6";
 import { PuffLoader } from "react-spinners";
 import { toast } from "react-toastify";
@@ -9,12 +9,14 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { storage } from "../config/firebase.config";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../config/firebase.config";
 import { progress } from "framer-motion";
-import { initialTags } from "../utils/helpers";
+import { adminIds, initialTags } from "../utils/helpers";
 import { serverTimestamp } from "firebase/firestore";
 import useTemplates from "../hooks/useTemplates";
+import { useNavigate } from "react-router-dom";
+import useUser from "../hooks/useUser";
 
 const CreateTemplate = () => {
   const [formData, setFormData] = useState({
@@ -36,6 +38,10 @@ const CreateTemplate = () => {
     isError: templateIsError,
     refetch: templateRefetch,
   } = useTemplates();
+
+  const { data: user, isLoading } = useUser();
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -138,8 +144,30 @@ const CreateTemplate = () => {
         templateRefetch();
         toast.success("Data pushed to the server");
       })
-      .catch((err) => {});
+      .catch((err) => {
+        toast.error(`Error : ${err.message}`);
+      });
   };
+
+  const removeTemplate = async (template) => {
+    const deleteRef = ref(storage, template?.imageURL);
+    await deleteObject(deleteRef).then(async () => {
+      await deleteDoc(doc(db, "templates", template?._id))
+        .then(() => {
+          toast.success("Template Deleted from Server");
+          templateRefetch();
+        })
+        .catch((err) => {
+          toast.error(`Error : ${err.message}`);
+        });
+    });
+  };
+
+  useEffect(() => {
+    if (!isLoading && !adminIds.includes(user?.uid)) {
+      navigate("/", { replace: true });
+    }
+  }, [user, isLoading]);
 
   return (
     <div className="w-full px-4 lg:px-10 2xl:px-32 py-4 grid grid-cols-1 lg:grid-cols-12">
@@ -247,7 +275,53 @@ const CreateTemplate = () => {
       </div>
 
       {/* right container */}
-      <div className="col-span-12 lg:col-span-8 2xl:col-span-9">2</div>
+      <div className="col-span-12 lg:col-span-8 2xl:col-span-9 px-2 w-full flex-1 py-4">
+        {templateIsLoading ? (
+          <React.Fragment>
+            <div className="w-full h-full flex items-center justify-center">
+              <PuffLoader color="#498FCD" size={40} />
+            </div>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            {templates && templates.length > 0 ? (
+              <React.Fragment>
+                <div className="w-full h-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4">
+                  {templates?.map((template) => (
+                    <div
+                      key={template._id}
+                      className="w-full h-[450px] rounded-md overflow-hidden relative"
+                    >
+                      <img
+                        src={template?.imageURL}
+                        alt="Template"
+                        className="w-full h-full object-cover"
+                      />
+
+                      {/* delete template button */}
+                      <div
+                        className="absolute top-4 right-4 w-8 h-8 rouunded-md flex items-center justify-center cursor-pointer bg-red-500"
+                        onClick={() => removeTemplate(template)}
+                      >
+                        <FaTrash />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <div className="w-full h-full flex items-center justify-center">
+                  <PuffLoader color="#498FCD" size={40} />
+                  <p className="text-xl tracking-wider capitalize text-txtPrimary">
+                    No data
+                  </p>
+                </div>
+              </React.Fragment>
+            )}
+          </React.Fragment>
+        )}
+      </div>
     </div>
   );
 };
