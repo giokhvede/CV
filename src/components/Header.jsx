@@ -48,14 +48,14 @@ const Header = () => {
       {/* input */}
       <div className="flex-1 border border-gray-300 px-4 py-1 rounded-md flex items-center justify-between bg-gray-200">
         <input
-          value={FilterData.searchTerm ? FilterData.searchTerm : ""}
+          value={FilterData?.searchTerm ? FilterData?.searchTerm : ""}
           onChange={handleSearchTerm}
           type="text"
           placeholder="Search Here..."
           className="flex-1 h-10 bg-transparent text-base font-semibold outline-none border-none"
         />
         <AnimatePresence>
-          {FilterData.searchTerm.length > 0 && (
+          {FilterData?.searchTerm.length > 0 && (
             <motion.div
               onClick={clearFilter}
               {...FadeInOutWithOpacity}

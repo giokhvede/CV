@@ -47,14 +47,14 @@ const Filters = () => {
         </AnimatePresence>
       </div>
 
-      <div className="w-full flex items-center justify-start overflow-x-scroll scrollbar-none gap-6">
+      <div className="w-full flex items-center justify-between overflow-x-scroll scrollbar-none gap-2">
         {FiltersData &&
           FiltersData.map((item) => (
             <div
               onClick={() => handleFilterValue(item.value)}
               key={item.id}
               className={`border border-gray-300 rounded-md px-6 py-2 cursor-pointer group hover:shadow-md ${
-                FilterData.searchTerm === item.value && "bg-gray-300 shadow-md"
+                FilterData?.searchTerm === item.value && "bg-gray-300 shadow-md"
               }`}
             >
               <p className="text-sm text-txtPrimary group-hover:text-txtDark whitespace-nowrap">
