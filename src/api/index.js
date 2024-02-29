@@ -5,8 +5,12 @@ import {
   orderBy,
   setDoc,
   query,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { auth, db } from "../config/firebase.config";
+import { toast } from "react-toastify";
 
 export const getUserDetail = () => {
   return new Promise((resolve, reject) => {
@@ -51,4 +55,24 @@ export const getTemplates = () => {
 
     return unsubscribe;
   });
+};
+
+export const saveToCollections = async (user, data) => {
+  if (!user?.collection?.includes(data?._id)) {
+    const docRef = doc(db, "users", user?.uid);
+
+    await updateDoc(docRef, {
+      collection: arrayUnion(data?._id),
+    })
+      .then(() => toast.success("Saved to Collections"))
+      .catch((err) => toast.error(`Error : ${err.message}`));
+  } else {
+    const docRef = doc(db, "users", user?.uid);
+
+    await updateDoc(docRef, {
+      collection: arrayRemove(data?._id),
+    })
+      .then(() => toast.success("Removed from Collections"))
+      .catch((err) => toast.error(`Error : ${err.message}`));
+  }
 };
