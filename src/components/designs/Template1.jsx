@@ -304,7 +304,7 @@ const Template1 = () => {
       userProfilePic: imageAsset.imageURL,
       imageURL,
     };
-    console.log(_doc);
+
     setDoc(doc(db, "users", user?.uid, "resumes", resume_id), _doc)
       .then(() => {
         toast.success(`Data Saved`);

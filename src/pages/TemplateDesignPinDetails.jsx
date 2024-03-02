@@ -89,7 +89,7 @@ const TemplateDesignPinDetails = () => {
               {data?.favorites?.length > 0 && (
                 <div className="flex items-center justify-center gap-1">
                   <BiSolidHeart className="text-base text-red-500" />
-                  <p className="text-base text-txtPrimary font-semibold">
+                  <p className="text-base  font-semibold">
                     {data?.favorites?.length} likes
                   </p>
                 </div>
@@ -101,10 +101,10 @@ const TemplateDesignPinDetails = () => {
                   <React.Fragment>
                     <div
                       onClick={addToCollection}
-                      className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 gap-2 hover:bg-gray-200 cursor-pointer"
+                      className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 gap-2 cursor-pointer hover:bg-emerald-500 text-txtPrimary hover:text-white"
                     >
-                      <BiSolidFolder className="text-base text-txtPrimary" />
-                      <p className="text-sm text-txtPrimary whitespace-nowrap">
+                      <BiSolidFolder className="text-base" />
+                      <p className="text-sm whitespace-nowrap">
                         Remove from Collections
                       </p>
                     </div>
@@ -113,11 +113,11 @@ const TemplateDesignPinDetails = () => {
                   <React.Fragment>
                     <div
                       onClick={addToCollection}
-                      className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 gap-2 hover:bg-gray-200 cursor-pointer"
+                      className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 gap-2 cursor-pointer hover:bg-emerald-500 text-txtPrimary hover:text-white"
                     >
-                      <BiSolidFolderPlus className="text-base text-txtPrimary" />
-                      <p className="text-sm text-txtPrimary whitespace-nowrap">
-                        Add from Collections
+                      <BiSolidFolderPlus className="text-base" />
+                      <p className="text-sm  whitespace-nowrap ">
+                        Add to Collections
                       </p>
                     </div>
                   </React.Fragment>
@@ -126,10 +126,10 @@ const TemplateDesignPinDetails = () => {
                   <React.Fragment>
                     <div
                       onClick={addToFavorite}
-                      className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 gap-2 hover:bg-gray-200 cursor-pointer"
+                      className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 gap-2 cursor-pointer hover:bg-emerald-500 text-txtPrimary hover:text-white"
                     >
-                      <BiSolidHeart className="text-base text-txtPrimary" />
-                      <p className="text-sm text-txtPrimary whitespace-nowrap">
+                      <BiSolidHeart className="text-base " />
+                      <p className="text-sm whitespace-nowrap">
                         Remove from Favorites
                       </p>
                     </div>
@@ -138,11 +138,11 @@ const TemplateDesignPinDetails = () => {
                   <React.Fragment>
                     <div
                       onClick={addToFavorite}
-                      className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 gap-2 hover:bg-gray-200 cursor-pointer"
+                      className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 gap-2 cursor-pointer hover:bg-emerald-500 text-txtPrimary hover:text-white"
                     >
-                      <BiHeart className="text-base text-txtPrimary" />
-                      <p className="text-sm text-txtPrimary whitespace-nowrap">
-                        Add from Favorites
+                      <BiHeart className="text-base " />
+                      <p className="text-sm  whitespace-nowrap">
+                        Add to Favorites
                       </p>
                     </div>
                   </React.Fragment>
@@ -159,7 +159,7 @@ const TemplateDesignPinDetails = () => {
             className="w-full h-72 bg-blue-200 rounded-md relative overflow-hidden"
             style={{
               background:
-                "url(https://png.pngtree.com/thumb_back/fh260/background/20220410/pngtree-puzzle-piece-holding-success-unity-photo-image_5406624.jpg)",
+                "url(https://w0.peakpx.com/wallpaper/31/750/HD-wallpaper-cup-coffee-books-pen-laptop.jpg)",
               backgroundPosition: "center",
               backgroundSize: "cover",
             }}
@@ -167,7 +167,7 @@ const TemplateDesignPinDetails = () => {
             <div className="absolute inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.4)]">
               <Link
                 to={"/"}
-                className="px-4 py-2 rounded-md border-2 border-gray-50 text-white"
+                className="px-4 py-2 rounded-md border-2 border-gray-50 text-white hover:bg-emerald-500"
               >
                 Discover More
               </Link>

@@ -8,6 +8,7 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  Timestamp,
 } from "firebase/firestore";
 import { auth, db } from "../config/firebase.config";
 import { toast } from "react-toastify";
@@ -114,6 +115,22 @@ export const getTemplateDetailEditByUser = (uid, id) => {
         resolve(doc.data());
       }
     );
+
+    return unsubscribe;
+  });
+};
+
+export const getSavedResumes = (uid) => {
+  return new Promise((resolve, reject) => {
+    const templateQuery = query(
+      collection(db, "users", uid, "resumes"),
+      orderBy("timeStamp", "asc")
+    );
+
+    const unsubscribe = onSnapshot(templateQuery, (querySnap) => {
+      const templates = querySnap.docs.map((doc) => doc.data());
+      resolve(templates);
+    });
 
     return unsubscribe;
   });
