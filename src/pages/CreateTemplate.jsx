@@ -131,7 +131,7 @@ const CreateTemplate = () => {
       tags: selectedTags,
       name:
         templates && templates.length > 0
-          ? `Templates${templates.length + 1}`
+          ? `Template${templates.length + 1}`
           : "Template1",
       timestamp: timestamp,
     };
@@ -183,7 +183,7 @@ const CreateTemplate = () => {
           </p>
           <p className="text-sm text-txtDark capitalize font-bold">
             {templates && templates.length > 0
-              ? `Templates${templates.length + 1}`
+              ? `Template${templates.length + 1}`
               : "Template1"}
           </p>
         </div>
