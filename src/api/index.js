@@ -96,3 +96,12 @@ export const saveToFavorites = async (user, data) => {
       .catch((err) => toast.error(`Error : ${err.message}`));
   }
 };
+
+export const getTemplateDetails = async (templateId) => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onSnapshot(doc(db, "templates", templateId), (doc) => {
+      resolve(doc.data());
+    });
+    return unsubscribe;
+  });
+};

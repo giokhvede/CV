@@ -30,8 +30,11 @@ const HomeContainer = () => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <div className="w-full grid grid-cols-1 mt-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 ">
-            <RenderATemplate templates={templates} />
+          <div className="w-full  grid grid-cols-1 mt-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 ">
+            <RenderATemplate
+              templates={templates}
+              className="bg-gray-300 px-10 py-10"
+            />
           </div>
         </React.Fragment>
       )}
@@ -47,11 +50,13 @@ const RenderATemplate = ({ templates }) => {
           <AnimatePresence>
             {templates &&
               templates.map((template, index) => (
-                <TemplateDesignPin
-                  key={template?._id}
-                  data={template}
-                  index={index}
-                />
+                <div className="bg-gray-300 rounded-md px-10 py-10 z-0">
+                  <TemplateDesignPin
+                    key={template?._id}
+                    data={template}
+                    index={index}
+                  />
+                </div>
               ))}
           </AnimatePresence>
         </React.Fragment>
