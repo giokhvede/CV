@@ -13,7 +13,10 @@ const Footer = () => {
         <Link to={"/"} className="text-blue-700 text-sm">
           Home
         </Link>
-        <Link to={"/"} className="text-blue-700 text-sm">
+        <Link
+          to={"https://www.linkedin.com/in/khvede/"}
+          className="text-blue-700 text-sm"
+        >
           Contact
         </Link>
         <Link to={"/"} className="text-blue-700 text-sm whitespace-nowrap">
